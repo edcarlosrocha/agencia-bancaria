@@ -1,0 +1,50 @@
+version: "3.7"
+services:
+  app:
+    build:
+      args:
+        user: dev
+        uid: 1001
+      context: ./.docker/app
+      dockerfile: Dockerfile
+    image: agencia-bancaria
+    container_name: agencia-bancaria-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www/
+    networks:
+      - agencia-bancaria
+
+  db:
+    image: mysql:5.7
+    container_name: agencia-bancaria-db
+    restart: unless-stopped
+    environment:
+      file_env: .env
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./.docker/db:/docker-entrypoint-initdb.d
+    networks:
+      - agencia-bancaria
+
+  nginx:
+    image: nginx:alpine
+    container_name: agencia-bancaria-nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./.docker/nginx:/etc/nginx/conf.d/
+    networks:
+      - agencia-bancaria
+
+networks:
+  agencia-bancaria:
+    driver: bridge
