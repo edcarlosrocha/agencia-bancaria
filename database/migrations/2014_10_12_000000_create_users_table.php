@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
                   ->unique()
                   ->nullable()
                   ->default(null);
-            $table->string('cnpf', 14)
+            $table->string('cnpj', 14)
                   ->unique()
                   ->nullable()
                   ->default(null);

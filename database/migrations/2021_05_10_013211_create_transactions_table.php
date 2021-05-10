@@ -24,8 +24,7 @@ class CreateTransactionsTable extends Migration
                   ->unsigned()
                   ->nullable();
             $table->json('authorization_response')
-                  ->nullable()
-                  ->default(null);
+                  ->nullable();
             $table->timestamps();
             $table->softDeletes();
 

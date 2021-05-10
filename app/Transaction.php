@@ -14,7 +14,7 @@ class Transaction extends Model
 
 
     protected $casts = [
-		'value' => 'decimal',
+		'value' => 'float',
 		'payer_id' => 'integer',
 		'payee_id' => 'integer',
 		'authorized' => 'boolean',
