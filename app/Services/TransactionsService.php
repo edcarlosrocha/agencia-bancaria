@@ -21,23 +21,67 @@ class TransactionsService
 
 	public static function store(TransactionRequest $request): object
 	{
-		$params = $request->all();
+		try {
+			if (! $request->validated()) {
+				return $request->errors()->getMessages();
+			}
 
-		return Transaction::create($params);
+			$fillable = (new Transaction)->getFillable();
+			$params   = $request->only($fillable);
+
+			if ($params['payer_id'] === $params['payee_id']) {
+				throw new \Exception("Não se pode transferir dinheiro para você mesmo");
+			}
+
+			return Transaction::create($params);
+		} catch (\Exception $e) {
+			return collect([
+				'error' => $e->getMessage()
+			]);
+		}
+
 	}
 
 
 	public static function update(TransactionRequest $request, int $id): object
 	{
-        $params = $request->all();     
-        $transaction = Transaction::find($id);
-        $transaction->update($params);
-        return $transaction;
+		try {
+			if (! $request->validated()) {
+				return $request->errors()->getMessages();
+			}
+
+			$fillable = (new Transaction)->getFillable();
+	        $params   = $request->only($fillable);     
+	        $transaction = Transaction::findOrFail($id);
+
+	        if (! $transaction) {
+	        	throw new \Exception("Transaction {$id} não encontrada");
+	        }
+
+	        $transaction->update($params);
+	        return $transaction;
+		} catch (\Exception $e) {
+			return collect([
+				'error' => $e->getMessage()
+			]);
+		}
 	}
 
 
-	public static function destroy(int $id): bool
+	public static function destroy(int $id)
 	{
-		return Transaction::destroy($id);
+		try {
+			$transaction = Transaction::findOrFail($id);
+
+			if (! $transaction) {
+				throw new \Exception("Transaction {$id} não encontrada");
+			}
+
+			return $transaction->delete();
+		} catch (\Exception $e) {
+			return collect([
+				'error' => $e->getMessage()
+			]);
+		}
 	}
 }

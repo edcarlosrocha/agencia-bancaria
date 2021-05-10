@@ -21,24 +21,63 @@ class UsersService
 
 	public static function store(UserRequest $request): object
 	{
-		$params = $request->all();
-		$params['user_type_id'] = isset($params['cnpj']) && ! empty($params['cnpj']) ? 2 : 1;
+		try {
+			if (! $request->validated()) {
+				return $request->errors()->getMessages();
+			}
 
-		return User::create($params);
+			$fillable = (new User)->getFillable();
+			$params   = $request->only($fillable);
+			$params['user_type_id'] = isset($params['cnpj']) && ! empty($params['cnpj']) ? 2 : 1;
+
+			return User::create($params);
+		} catch (\Exception $e) {
+			return collect([
+				'error' => $e->getMessage()
+			]);
+		}
 	}
 
 
 	public static function update(UserRequest $request, int $id): object
 	{
-        $params = $request->all();     
-        $user = User::find($id);
-        $user->update($params);
-        return $user;
+		try {
+			if (! $request->validated()) {
+				return $request->errors()->getMessages();
+			}
+			
+			$fillable = (new User)->getFillable();
+	        $params   = $request->only($fillable);     
+	        $user     = User::findOrFail($id);
+
+	        if (! $user) {
+	        	throw new \Exception("User {$id} não encontrado");
+	        }
+
+	        $user->update($params);
+	        return $user;
+		} catch (\Exception $e) {
+			return collect([
+				'error' => $e->getMessage()
+			]);
+		}
 	}
 
 
 	public static function destroy(int $id): bool
 	{
-		return User::destroy($id);
+		try {
+			$user = User::findOrFail($id);
+
+			if (! $user) {
+				throw new \Exception("User {$id} não encontrada");
+			}
+
+			return $user->delete();
+		} catch (\Exception $e) {
+			return collect([
+				'error' => $e->getMessage()
+			]);
+		}
 	}
 }
