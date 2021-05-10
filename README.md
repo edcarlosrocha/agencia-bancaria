@@ -43,4 +43,13 @@ docker-compose exec app php artisan db:seed
 Verifique se tudo correu bem acessando o seu navegador no endereço http://localhost:8000, a tela inicial do Laravel deverá aparecer.
 
 ## Para utilizar a API
-Importe a collection .docs/agencia-bancaria.postman_collection.json para seu postman
+Importe a collection .docs/agencia-bancaria.postman_collection.json para seu postman, e em seguida dentro do Postman:
+- Use a Request "Store - /api/v1/user" dentro da pasta Api/User para criar seu usuário, copie o 'api_token' gerado por ele.
+- Nas configurações da collection adicione o valor copiado para a variável de ambiente "API_TOKEN".
+- Pronto, você terá acesso a todas as rotas.
+
+## Para ajustar seu código automaticamente a PSR-12:
+```sh
+docker-compose exec app chmod +x code-style.sh
+docker-compose exec app ./code-style.sh
+```
