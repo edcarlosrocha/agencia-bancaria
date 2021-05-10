@@ -4,7 +4,7 @@ services:
     build:
       args:
         user: dev
-        uid: 1001
+        uid: 1000
       context: ./.docker/app
       dockerfile: Dockerfile
     image: agencia-bancaria
