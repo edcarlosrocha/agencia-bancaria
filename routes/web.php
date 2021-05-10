@@ -16,14 +16,5 @@ use App\User;
 */
 
 Route::get('/', function () {
-	$data = [];
-	$data['users'] = User::all();
-
-    return view('welcome', $data);
-});
-
-Route::get('/teste', function() {
-	$data = [];
-
     return view('welcome', $data);
 });
