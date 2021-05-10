@@ -18,13 +18,12 @@ use \Api\TransactionsController;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/v1/user', "Api\UsersController@store");
 
-Route::prefix('v1')->middleware([])->group(function () {
+Route::prefix('v1')->middleware('auth:api')->group(function () {
 	// User
-	Route::resource('user', UsersController::class);
+	Route::resource('user', UsersController::class)
+		 ->except(['store']);
 
 	// Transaction
 	Route::resource('transaction', TransactionsController::class);

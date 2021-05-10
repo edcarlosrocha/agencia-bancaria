@@ -2,8 +2,9 @@
 
 namespace App\Services;
 use App\Http\Requests\UserRequest;
-
+use Illuminate\Support\Str;
 use App\User;
+use Auth;
 
 class UsersService
 {
@@ -29,6 +30,7 @@ class UsersService
 			$fillable = (new User)->getFillable();
 			$params   = $request->only($fillable);
 			$params['user_type_id'] = isset($params['cnpj']) && ! empty($params['cnpj']) ? 2 : 1;
+			$params['api_token'] = Str::random(60);
 
 			return User::create($params);
 		} catch (\Exception $e) {
@@ -47,7 +49,8 @@ class UsersService
 			}
 			
 			$fillable = (new User)->getFillable();
-	        $params   = $request->only($fillable);     
+	        $params   = $request->only($fillable);
+	        $params['api_token'] = Str::random(60);    
 	        $user     = User::findOrFail($id);
 
 	        if (! $user) {

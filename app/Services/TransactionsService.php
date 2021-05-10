@@ -2,7 +2,7 @@
 
 namespace App\Services;
 use App\Http\Requests\TransactionRequest;
-
+use Auth;
 use App\Transaction;
 
 class TransactionsService
@@ -28,6 +28,11 @@ class TransactionsService
 
 			$fillable = (new Transaction)->getFillable();
 			$params   = $request->only($fillable);
+			$params['payer_id'] = Auth::user()->id;
+
+			if (Auth::user()->user_type_id == 2) {
+				throw new \Exception("Usuário tipo Lojista não pode transferir dinheiro");
+			}
 
 			if ($params['payer_id'] === $params['payee_id']) {
 				throw new \Exception("Não se pode transferir dinheiro para você mesmo");
