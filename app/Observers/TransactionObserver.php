@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Observers;
+
 use Http;
 use App\Transaction;
 

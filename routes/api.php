@@ -2,10 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 // Controllers;
-use \Api\UsersController;
-use \Api\TransactionsController;
+use Api\UsersController;
+use Api\TransactionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,10 +20,10 @@ use \Api\TransactionsController;
 Route::post('/v1/user', "Api\UsersController@store");
 
 Route::prefix('v1')->middleware('auth:api')->group(function () {
-	// User
-	Route::resource('user', UsersController::class)
-		 ->except(['store']);
+    // User
+    Route::resource('user', UsersController::class)
+         ->except(['store']);
 
-	// Transaction
-	Route::resource('transaction', TransactionsController::class);
+    // Transaction
+    Route::resource('transaction', TransactionsController::class);
 });

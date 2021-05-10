@@ -13,17 +13,17 @@ class UserTypesSeeder extends Seeder
     public function run()
     {
         UserType::updateOrCreate([
-        	'id' => 1
+            'id' => 1
         ], [
-        	'id' => 1, 
-        	'name' => 'Comum'
-    	]);
+            'id' => 1,
+            'name' => 'Comum'
+        ]);
 
         UserType::updateOrCreate([
-        	'id' => 2
+            'id' => 2
         ], [
-        	'id' => 2, 
-        	'name' => 'Lojista'
-    	]);
+            'id' => 2,
+            'name' => 'Lojista'
+        ]);
     }
 }
