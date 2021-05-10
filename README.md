@@ -53,3 +53,8 @@ Importe a collection .docs/agencia-bancaria.postman_collection.json para seu pos
 docker-compose exec app chmod +x code-style.sh
 docker-compose exec app ./code-style.sh
 ```
+
+## Para rodar os testes: (Ainda não implementados)
+```sh
+docker-compose exec app php artisan test
+```

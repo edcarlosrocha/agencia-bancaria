@@ -32,4 +32,8 @@ $(pwd)/vendor/bin/phpcbf --standard=PSR12 $(pwd)/database/seeds/
 $(pwd)/vendor/bin/phpcs  --standard=PSR12 $(pwd)/routes/
 $(pwd)/vendor/bin/phpcbf --standard=PSR12 $(pwd)/routes/
 
+# Testes:
+$(pwd)/vendor/bin/phpcs  --standard=PSR12 $(pwd)/tests/
+$(pwd)/vendor/bin/phpcbf --standard=PSR12 $(pwd)/tests/
+
 #docker run -it --rm -v $(pwd):/project -w /project jakzal/phpqa phpmd app text cleancode,codesize,controversial,design,naming,unusedcode
